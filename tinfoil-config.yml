@@ -1,0 +1,23 @@
+cvm-version: 0.0.33
+ovmf-version: 0.0.2
+cpus: 16
+memory: 65536
+
+models:
+  - name: "qwen2-5-72b"
+    repo: "Qwen/Qwen2.5-72B-Instruct-AWQ@698703eae6604af048a3d2f509995dc302088217"
+    mpk: "ddd9eec6024430f459b9e5e24591a995329e26cf63cfc7c3465fce17b081ba58_41607450624_d096fc1d-3279-5454-9fc0-cb0f2c8c7358"
+vllm-args: --enable-auto-tool-choice --tool-call-parser hermes
+
+shim:
+  domains:
+    - qwen2-5-72b-2.model.tinfoil.sh
+  listen-port: 443
+  upstream-port: 8080
+  control-plane: https://api.tinfoil.sh
+  paths:
+    - /v1/chat/completions
+    - /metrics
+  origins:
+    - https://tinfoil.sh
+    - https://chat.tinfoil.sh
